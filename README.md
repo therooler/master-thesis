@@ -10,4 +10,4 @@ bibtex main.aux
 pdflatex main.tex
 pdflatex main.tex
 ```
-to get the thesis in main.pdf
+to get the thesis in `main.pdf`
