@@ -1,0 +1,282 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Masters/Doctoral Thesis 
+% LaTeX Template
+% Version 2.5 (27/8/17)
+%
+% This template was downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Version 2.x major modifications by:
+% Vel (vel@latextemplates.com)
+%
+% This template is based on a template by:
+% Steve Gunn (http://users.ecs.soton.ac.uk/srg/softwaretools/document/templates/)
+% Sunil Patel (http://www.sunilpatel.co.uk/thesis-template/)
+%
+% Template license:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+11pt, % The default document font size, options: 10pt, 11pt, 12pt
+%oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
+english, % ngerman for German
+singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
+%draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
+%nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
+%liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
+%toctotoc, % Uncomment to add the main table of contents to the table of contents
+%parskip, % Uncomment to add space between paragraphs
+%nohyperref, % Uncomment to not load the hyperref package
+headsepline, % Uncomment to get a line under the header
+%chapterinoneline, % Uncomment to place the chapter title next to the number on one line
+%consistentlayout, % Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match the default layout
+]{stylesheet/MastersDoctoralThesis} % The class file specifying the document structure
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage{epstopdf}
+\usepackage{mathpazo} % Use the Palatino font by default
+\usepackage{physics}
+\usepackage{nomencl}
+\usepackage[margin=1cm]{caption}
+\usepackage{amsthm}
+\usepackage{algorithm2e}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{mathtools}
+% \usepackage{subcaption}
+\usepackage[caption=false]{subfig}
+\usepackage{qcircuit}
+\usepackage{mathrsfs}
+% My own packages
+\usepackage{dsfont}
+\usepackage{bm}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+
+% My own commands
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\setenumerate[0]{label=\alph*)}
+\newcommand{\vecxmu}[0]{\mathbf{x}^{\mu}}
+\newcommand{\vecxnu}[0]{\mathbf{x}^{\nu}}
+\newcommand{\vecwk}[1]{\mathbf{w}^{#1}}
+\newcommand{\sx}{\sigma^{x}}
+\newcommand{\sy}{\sigma^{y}}
+\newcommand{\sz}{\sigma^{z}}
+\theoremstyle{plain}
+\newtheorem{definition}{Definition}[section]
+
+\makenomenclature
+
+\usepackage[backend=bibtex,style=numeric-comp,natbib=true, sorting=none]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+
+% commands
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+\addbibresource{library/library_chapter1.bib}
+\addbibresource{library/library_chapter2.bib}
+\addbibresource{library/library_chapter3.bib}
+
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
+
+%----------------------------------------------------------------------------------------
+%	MARGIN SETTINGS
+%----------------------------------------------------------------------------------------
+
+\geometry{
+	paper=a4paper, % Change to letterpaper for US letter
+	inner=2.5cm, % Inner margin
+	outer=3.8cm, % Outer margin
+	bindingoffset=.5cm, % Binding offset
+	top=1.5cm, % Top margin
+	bottom=1.5cm, % Bottom margin
+	%showframe, % Uncomment to show how the type block is set on the page
+}
+
+%----------------------------------------------------------------------------------------
+%	THESIS INFORMATION
+%----------------------------------------------------------------------------------------
+
+\thesistitle{Quantum Perceptron Learning} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
+\supervisor{Prof. Dr. H.J.Kappen} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
+\examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
+\degree{Master of Science} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
+\author{Roeland Wiersema} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+% \addresses{dfdf} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
+\subject{Physics} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
+\keywords{dfasdf} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
+\university{Radboud University} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
+\department{Department of Biophysics} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
+\group{Machine Learning Group} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
+\faculty{Faculty of Science} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
+
+\AtBeginDocument{
+\hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
+\hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
+\hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
+}
+
+\begin{document}
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+\begin{center}
+
+% \vspace*{.06\textheight}
+% {\scshape\Huge \univname\par}\vspace{1.5cm} % University 
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics[width = 0.8\linewidth]{figures/title_page/logo.eps}
+  }
+\end{minipage}\\[0.5cm]
+
+\textsc{\Large MSc Physics and Astronomy}\\[0.5cm] % Thesis type
+\textsc{\Large Master Thesis}\\[0.5cm] % Thesis type
+
+\HRule \\[0.4cm] % Horizontal line
+{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
+\HRule \\[1.5cm] % Horizontal line
+ 
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+\textcolor{rured}{R.C.} \textsc{\textcolor{rured}{Wiersema}}\\[0.5cm] % Author name - remove the \href bracket to remove the link
+\large \emph{Examination date: }\\
+\textcolor{rured}{\today}\\
+\end{flushleft}
+\end{minipage}
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisor:} \\
+\textcolor{rured}{Prof. Dr. H.J.} \textsc{\textcolor{rured}{Kappen}} \\[0.5cm] 
+\large \emph{Second Supervisor: }\\
+\textcolor{rured}{Prof. Dr. J.} \textsc{\textcolor{rured}{Mentink}} \\
+
+\end{flushright}
+\end{minipage}\\[1cm]
+\includegraphics[width=0.7\textwidth]{figures/title_page/title_page_full.png} \\[2cm]
+\deptname\\[2cm] % Research group name and department name
+ 
+\vfill
+
+\vfill
+\end{center}
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{abstract}
+We propose a method for learning a quantum probabilistic model of a perceptron. By considering a cross entropy between two density matrices, we can learn a model that takes noisy output labels into account while learning. A multitude of proposals already exist that aim to utilize the curious properties of quantum systems to build a quantum perceptron, but these proposals rely on a classical cost function for the optimization procedure. We demonstrate the usage of a quantum equivalent of the classical log-likelihood, which allows for a quantum model and training procedure. We show that this allows us to better capture noisiness in data compared to a classical perceptron. By considering entangled qubits we can learn nonlinear separation boundaries, such as XOR. We outline possible extensions of this model and consider the constraints of physical systems for learning. The work in this thesis is the culmination of one and a half year of research in the Biophysics group at Radboud University. The most important results are summarized in a \textit{Physical Review A} paper \cite{Wiersema2019}.
+\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	ACKNOWLEDGEMENTS
+%----------------------------------------------------------------------------------------
+
+\begin{acknowledgements}
+There are a couple of people who have been essential to the development of this thesis. First of all, Professor Kappen's guidance has been inspirational. He has offered me a perfect introduction to the wonderful physics community and life as an academic. Next, I want to thank the Biophysics group for their input and the inspiring lunch breaks, specifically: Giel van Bergen, Manu Compen, Eduardo Dominiquez en Onno Huygen. I also want to thank Professor Mentink for interesting discussions and taking me along to Eindhoven. Finally, my thanks go to my friends and family for keeping me sane and believing in me.
+
+\end{acknowledgements}
+
+%----------------------------------------------------------------------------------------
+%	NOTATION
+%----------------------------------------------------------------------------------------
+\nomenclature{$x^*$}{Complex conjugate}
+\nomenclature{$\hat{A}^\dagger$}{Conjugate transpose}
+\nomenclature{$\Hat{A}$}{Operator}
+\nomenclature{$\mathcal{A}$}{Observable}
+\nomenclature{$\mathcal{H}$}{Hilbert space}
+\nomenclature{$\mathbf{e}_i$}{Standard basis of a n-dimensional vector space}
+\nomenclature{$\ket{i}$}{$i$th computational basis state of a qubit system}
+\nomenclature{$\ket{v_i}$}{element of orthonormal basis of n-dimensional quantum system}
+\nomenclature{$\ket{\psi}$}{Quantum state in Dirac notation}
+\nomenclature{$\mathbf{x}$}{Vector over coordinate space}
+\nomenclature{$\mathbf{A}$}{Matrix}
+\nomenclature{$\otimes$}{Tensor product}
+\nomenclature{$\mathbf{a}\cdot\mathbf{b}$}{Dot product}
+\nomenclature{$\hat{\sigma}^k\equiv \sigma^k$}{Pauli operator / matrix}
+\nomenclature{$H$}{Hamiltonian}
+\nomenclature{$\expval{A}$}{Expectation value of operator}
+\nomenclature{$\mathbb{E}(X)$}{Expectation value of random variable}
+\nomenclature{$\mathcal{L}$}{Likelihood}
+\nomenclature{$\mathds{I}$}{Identity function}
+\nomenclature{$\mathcal{N}$}{Normal distribution}
+\nomenclature{$\comm{\hat{A}}{\hat{B}}$}{Commutator}
+\nomenclature{$\acomm{\hat{A}}{\hat{B}}$}{Anticommutator}
+\nomenclature{$\nabla$}{Vector gradient}
+\nomenclature{$\mathbb{1}$}{Identity matrix}
+\nomenclature{$\sum_\mathbf{x}$}{Sum over the data}
+\nomenclature{$\sum_y$}{Sum over possible labels}
+
+
+% \nomenclature{How do we display orthonormal, orthogonal and normal bases?}{}
+% \nomenclature{Usage of Hermitian and self-adjoint must be consistent}{}
+% \nomenclature{Indentation?}{}
+% \nomenclature{Use N for size of systems}{}
+% \nomenclature{Use pmatrix in stead of bmatrix}{}
+% \nomenclature{Consistently use the same haakjes}{}
+% \nomenclature{Consistently use the same imagesze}{}
+% \nomenclature{$\cosh(h)$ or $\cosh{h}$}{}
+% \nomenclature{Caption in figures need to have a title as first sentence.}{}
+% \nomenclature{Look at English tenses.}{}
+% \nomenclature{Capital letters in section headers?}{}
+
+\printnomenclature
+
+%----------------------------------------------------------------------------------------
+%	LIST OF CONTENTS PAGES
+%----------------------------------------------------------------------------------------
+
+\tableofcontents % Prints the main table of contents
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - CHAPTERS
+%----------------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{thesis} % Return the page headers back to the "thesis" style
+
+% Include the chapters of the thesis as separate files from the Chapters folder
+% Uncomment the lines as you write the chapters
+
+% \include{chapters/chapter1}
+% \include{chapters/chapter2}
+\include{chapters/chapter3}
+% \include{chapters/chapter4}
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - APPENDICES
+%----------------------------------------------------------------------------------------
+
+\appendix
+\include{appendices/appendix_A}
+\include{appendices/appendix_B}
+\include{appendices/appendix_C}
+% \include{appendices/appendix_D}
+% \include{appendices/appendix_E}
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\printbibliography
+%----------------------------------------------------------------------------------------
+
+\end{document}  

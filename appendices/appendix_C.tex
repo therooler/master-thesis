@@ -1,0 +1,307 @@
+
+\chapter{Derivation Physical System} \label{sec:phys_sys}
+\section{Ising Model With Transverse Fields}
+Consider 2-qubit the Hamiltonian
+\begin{align*}
+    \Aboxed{H_1 &= h_1 {\sx_1} + h_2 {\sx_2} + J^{z}_{12} {\sz}_1 {\sz}_2}.
+\end{align*}
+We want to estimate the value of 
+\begin{equation*}
+    e^{H_1} = \sum_{i=0}^\infty \frac{H_1^n}{n!},
+\end{equation*} 
+and perform the partial trace over the second subspace,
+\begin{equation*}
+    \Tr_2\{\rho\} =  \frac{1}{Z}\Tr_2\{e^{H_1}\}.
+\end{equation*}
+We need to keep a couple of things in mind. First off, we also need to estimate the value of the partition function $Z$ up to the correct order. Only then will we see that if $J_{12}\to0$, the approximation will be independent of variables linked to the second spin variable. We can calculate the first 5 orders in $H_1$,
+\begin{equation*}
+    \rho = \frac{1}{Z}\exp(H_1) \approx \frac{1}{Z} \left\{1 + {H_1} + \frac{1}{2}H_1^2 + \frac{1}{6} {H_1}^3 + \frac{1}{14} {H_1}^4+ \frac{1}{120} {H_1}^5 \right\} + O(h^6) .
+\end{equation*}
+We start with $H_1^2$,
+\begin{align*}
+    H_1^2 & = \left(h_1\right)^{2} ({\sx_1})^{2}  + h_1 h_2 \left({\sx_2} {\sx_1} + {\sx_1} {\sx_2}\right) + h_1 J^{z}_{12} \left({\sx_1} {\sz}_1 {\sz}_2 + {\sz}_1 {\sz}_2 {\sx_1}\right) + \left(h_2\right)^{2} ({\sx_2})^{2} \\
+    & + h_2 J^{z}_{12} \left({\sx_2} {\sz}_1 {\sz}_2 + {\sz}_1 {\sz}_2 {\sx_2}\right) + \left(J^{z}_{12}\right)^{2} ({\sz}_1)^2 {\sz}_2^{2}.
+\end{align*}
+Using that 
+\begin{align}
+    &\{\sigma^a_i, \sigma^b_i\}=2\delta_{ab}I,\\
+    &(\sigma^a_i)^2=I,\\
+    &[\sigma^a_i,\sigma^b_i] = 2i\epsilon_{abc}\sigma^c_i \quad \text{ or } \quad \sigma^a_i \sigma^b_i = i \epsilon_{abc} \sigma^c,\\
+    &[\sigma^a_i,\sigma^b_j]=0,
+\end{align} 
+we can simplify this greatly,
+\begin{align*}
+    \Aboxed{H_1^2 & = c + 2 h_1 h_2 {\sx_1} {\sx_2}},
+\end{align*}
+with $c= \left(J^{z}_{12}\right)^{2}+  \left(h_1\right)^{2} + \left(h_2\right)^{2}$. For ${H_1}^3=H_1^2 {H_1}$:
+\begin{align*}
+    H_1^2 {H_1} & = \left(c + 2 h_1 h_2 {\sx_1} {\sx_2}\right) {H_1} \\
+    & = c {H_1} + \left(2 h_1^2 h_2 {\sx_2} + 2  h_1h_2^2 {\sx_1} + 2 J_{12} h_1 h_2 {\sx_1} {\sx_2}{\sz}_1 {\sz}_2\right)\\
+    & = c {H_1} + 2 \left(h_1^2 h_2 {\sx_2} +  h_1h_2^2 {\sx_1} - iJ_{12} h_1 h_2 {\sx_1}{\sz}_1 {\sy_2}\right)\\
+    & = c {H_1} + 2 \left(h_1^2 h_2 {\sx_2} +  h_1h_2^2 {\sx_1} + J_{12} h_1 h_2 {\sy_1} {\sy_2}\right).
+\end{align*}
+So 
+\begin{align*}
+    \Aboxed{H_1^3 = c {H_1} + 2 \left(h_1^2 h_2 {\sx_2} +  h_1h_2^2 {\sx_1} + J_{12} h_1 h_2 {\sy_1} {\sy_2}\right)}.
+\end{align*}
+We can look at the density matrix $\rho_{red}$ by tracing out all the operators living in the second subspace. Remember the trace relations
+\begin{align}
+    \Tr{\sigma^a} &= 0,\\
+    \Tr{\sigma^a\sigma^b} &= \delta_{ab},\\
+    \Tr{\sigma^a\sigma^b\sigma^c} &= 2i \epsilon_{abc}.
+\end{align}
+We calculate
+\begin{align*}
+    \rho_{red} = \frac{1}{Z} \Tr_2 \left\{ e^{H_1}\right\} \approx \frac{1}{Z} \Tr_2 \left\{1 + {H_1} + \frac{1}{2}H_1^2 + \frac{1}{6} {H_1}^3\right\},
+\end{align*}
+with
+\begin{align*}
+    &\Tr_2\{{H_1}\} = 2 h_1 {\sx_1},\\
+    &\Tr_2\{H_1^2\} = 2c ,\\
+    &\Tr_2\{{H_1}^3\} = 2h_1 \left(c  + 2 h_2^2 \right){\sx_1}.
+\end{align*}
+To second order this gives
+\begin{align*}
+    \Tr_2\{\rho\} & \approx \frac{1}{Z} \left\{2 + 2 h_1 {\sx_1} + \frac{1}{2} 2c\right\},
+\end{align*}
+with $Z = 4 + 2c$. Remember that $c \propto O(h^2)$. We  approximate the normalization constant to order $O(h^2)$, which gives
+\begin{align*}
+    \frac{1}{Z} = \frac{1}{2(2+c)} \approx \frac{1}{4}(1 - \frac{1}{2}c) + O(h^4),
+\end{align*}
+so
+\begin{align*}
+    \Tr_2\{\rho\} & \approx\frac{1}{4}(1 - \frac{1}{2}c)\left(2 + c + 2 h_1 {\sx_1}  \right) \\
+     & \approx \frac{1}{4}\left(2 + 2 h_1 {\sx_1} \right) + O(h^3) \\
+     & = \frac{1}{2}\left(1 + h_1 {\sx_1} \right) + O(h^3),
+\end{align*}
+which to order $O(h^3)$ only contains terms dependent on the fields of spin 1 as we expect.\newline
+
+\noindent For the third order expansion we do the same,
+\begin{align*}
+    \Tr_2\{\rho\} & \approx \frac{1}{Z} \left\{2 + 2 h_1 {\sx_1} + \frac{1}{2} 2c+\frac{1}{6}\left(2h_1 \left(c  + 2 h_2^2 \right)\right){\sx_1}\right\}\\
+    & =  \frac{1}{Z} \left\{2 + c + 2 \left(h_1 + \frac{1}{6} h_1 \left(c  + 2 h_2^2 \right)\right){\sx_1}\right\}.
+\end{align*}
+Which is again normalized by $Z = 4+2c$. Define
+\begin{equation*}
+    a^x = 2 \left(h_1 + \frac{1}{6} h_1 \left(c  + 2 h_2^2 \right)\right)\label{eq:ax_def} ,
+\end{equation*}
+and approximate the normalization constant,
+\begin{align*}
+    \frac{1}{Z} = \frac{1}{2(2+c)} \approx \frac{1}{4}(1 - \frac{1}{2}c) + O(h^4) = Z_1.
+\end{align*}
+We then calculate the full term to order $O(h^4)$,
+\begin{align*}
+    \Tr_2\{\rho\}& = \frac{1}{4}(1 - \frac{1}{2}c)\left\{2 + c + 2 \left(h_1 + \frac{1}{6} h_1 \left(c  + 2 h_2^2 \right)\right){\sx_1}\right\}\\
+    & = \frac{1}{4}\left\{2  +  \left(2\left(h_1 + \frac{1}{6} h_1 \left(c  + 2 h_2^2 \right)\right) -  c h_1 \right){\sx_1}\right\} + O(h^4) \\ 
+    & = \frac{1}{4}\left\{2  +  h_1 \left(2  + \frac{1}{3} \left(h_1^2 + 3h_2^2 + J_{12}^2 \right) -  h_1^2 -h_2^2 - J_{12}^2) \right){\sx_1}\right\} + O(h^4)\\
+    & = \frac{1}{2}\left\{1  +  h_1 \left(1  - \frac{1}{3} \left[h_1^2 + J_{12}^2 \right] \right){\sx_1}\right\} + O(h^4).
+\end{align*}
+which for $J_{12}\to0$ is independent of spin 2. We and write the reduced density matrix as
+\begin{equation*}
+    \Tr_2\{\rho\} \approx \frac{1}{2}(1 + \frac{a^x}{Z_1} \sigma^x) + O(h^4).
+\end{equation*}
+So with this physical system we can only control the off diagonal elements of the density matrix, and not the diagonal. Flipping the $x$ fields and $z$ fields should allow us to learn the diagonal and thus any problem. This is under the assumption that there will not pop up any $\sz$ scaling in higher order terms, which seems unlikely.\newline
+
+\noindent The fourth order term is given by
+\begin{align*}
+    H_1^4 &= H_1^2 H_1^2 = (c + 2 h_1 h_2 {\sx_1} {\sx_2}) (c + 2 h_1 h_2 {\sx_1} {\sx_2}),
+\end{align*}
+which is simplified to
+\begin{align*}
+    \Aboxed{H_1^4 & = (c^2 + 4 (h_1 h_2)^2 + 4 (h_1 h_2)^2)}.
+\end{align*}
+This gives the traced out term of
+\begin{align*}
+    \Tr_2\{H_1^4\} = 2c^2 + 8(h_1 h_2)^2.
+\end{align*}
+This term is constant and contributes only to to $Z$ and not to the field $a^x$,
+\begin{align*}
+    \Tr_2\{\rho\}  & \approx \frac{1}{Z} \left(2+2 h_1 {\sx_1} + \frac{1}{2} 2c+\frac{1}{6}\left(2h_1 \left(c  + 2 h_2^2 \right)\right){\sx_1} + \frac{1}{24}(2c^2+ 8(h_1 h_2)^2)\right) + O(h^5)\\
+    & = \frac{1}{Z} \left(2+c+ a^x {\sx_1} + \frac{1}{12} c^2 + \frac{1}{3}(h_1 h_2)^2 )\right),
+\end{align*}
+with $a^x$ as in equation \ref{eq:ax_def}. This density matrix is normalized by $Z = 4+ 2c + \frac{1}{6} c^2 + \frac{2}{3}(h_1 h_2)^2$. Approximate $1/Z$ to order $O(h^5)$,
+\begin{align*}
+    \frac{1}{Z} & = \frac{1}{4}\frac{1}{1 + \frac{1}{2}\underbrace{(c+ \frac{1}{12}c^2+ \frac{1}{3}(h_1h_2)^2)}_{a}} \approx \frac{1}{4}\left(1 - \frac{a}{2} + \frac{a^2}{4}\right) + O(h^5).
+\end{align*}
+Luckily, the term proportional to $a^2$ only contributes a single term $c^2$ since the other terms are at least of order $O(h^6)$. The normalization constant becomes
+\begin{align}
+    \frac{1}{Z} &\approx \frac{1}{4}\left(1 - \frac{1}{2}(c+\frac{1}{12}c^2 +\frac{1}{3} (h_1h_2)^2) + \frac{1}{4}c^2 \right)+ O(h^6)\nonumber\\
+    &= \frac{1}{4}\left(\underbrace{1 - \frac{1}{2}c}_{Z_1} + \underbrace{\frac{5}{24}c^2 - \frac{1}{6} (h_1h_2)^2}_{Z_2}) \right) = \frac{1}{4}(Z_1 + Z_2)\label{eq:norm_z}
+\end{align}
+Continuing with $\Tr_2\{\rho\}$,
+\begin{align*}
+    \Tr_2\{\rho\}  & \approx  \frac{1}{4}\left(1 - \frac{1}{2}c+\frac{5}{24}c^2 - \frac{1}{6} (h_1h_2)^2) \right)\left(2+c + \frac{1}{12} c^2 + \frac{1}{3}(h_1 h_2)^2 + a^x {\sx_1})\right)\\
+    & = \frac{1}{4}\left(2+\overbrace{c + \frac{1}{12} c^2 + \frac{1}{3}(h_1 h_2)^2 - c - \frac{1}{2}c^2 + \frac{10}{24}c^2 - \frac{1}{3}(h_1 h_2)^2}^{=0}\right) \\
+    & + \frac{1}{4}\left(1 - \frac{1}{2}c+\frac{5}{24}c^2 - \frac{1}{6} (h_1h_2)^2) \right)a^x{\sx_1}\\
+    & = \frac{1}{2} \left[1 + \left(1 - \frac{1}{2}c+\frac{5}{24}c^2 - \frac{1}{6} (h_1h_2)^2) \right)\left(h_1 + \frac{1}{6} h_1 \left(c  + 2 h_2^2 \right)\right)\right]\\
+    & =  \frac{1}{2} \left[1 + \left(h_1 + \frac{1}{6} h_1 \left(c  + 2 h_2^2 \right) -\frac{1}{2}c h_1 \right) \right] + O(h^5)\\
+    & =  \frac{1}{2} \left[1 + h_1(1 - \frac{1}{3}(h_1^2+ J^2_{12})) \right].
+\end{align*}
+This final term is independent of the field $h_2$. The fifth order term becomes
+\begin{align*}
+    H_1^5 =& H_1^3 H_1^2 = (c {H_1} + 2 \left(h_1^2 h_2 {\sx_2} +  h_1h_2^2 {\sx_1} + J_{12} h_1 h_2 {\sy_1} {\sy_2}\right))(c + 2 h_1 h_2 {\sx_1} {\sx_2})\\
+    = & c^2 {H_1} + 2c \left(h_1^2 h_2 {\sx_2} +  h_1 h_2^2 {\sx_1} + J_{12} h_1 h_2 {\sy_1} {\sy_2}\right) \\
+    & +  4 h_1 h_2(h_1^2 h_2  {\sx_2} {\sx_1}{\sx_2} + h_1 h_2^2  {\sx_1} {\sx_1}{\sx_2} + J_{12}h_1 h_2\sy_1\sy_2{\sx_1}{\sx_2})
+    + 2c h_1 h_2 {H_1}{\sx_1} {\sx_2} \\
+    = &  c^2 {H_1} + 2c \left(h_1^2 h_2 {\sx_2} +  h_1h_2^2 {\sx_1} + J_{12} h_1 h_2 {\sy_1} {\sy_2}\right) \\
+    & +  4 h_1 h_2(h_1^2 h_2 {\sx_1} + h_1 h_2^2 {\sx_2} - J_{12}h_1 h_2{\sz_1}{\sz_2})\\
+    & + 2c h_1 h_2 (h_1 {\sx_2} + h_2 {\sx_1} - J_{12} {\sy_1}{\sy_2}),
+\end{align*}
+which is simplified to 
+\begin{align*}
+    \Aboxed{H_1^5 = & c^2 {H_1} + 4c \left(h_1^2 h_2 {\sx_2} +  h_1h_2^2 {\sx_1}\right) + 4 h_1 h_2(h_1^2 h_2 {\sx_1} + h_1 h_2^2 {\sx_2} - J_{12}h_1 h_2{\sz_1}{\sz_2})}.
+\end{align*}
+Taking the subtrace gives
+\begin{align*}
+    \Tr_2\{H_1^5\} = &  (2c^2 h_1  + 8c h_1 h_2^2 +  8 h_1^3 h_2^2){\sx_1}.
+\end{align*}
+There are no new contributions to $Z$, so we can use the derivation from the $H_1^4$ term,
+\begin{align*}
+    \Tr_2\{\rho\}  & \approx \frac{1}{Z} \left(2+c + a^x {\sx_1} + \frac{1}{24}(2c^2+ 8(h_1 h_2)^2) + \frac{1}{120}(2c^2 h_1  + 8c h_1 h_2^2 +  8 h_1^3 h_2^2){\sx_1}\right) + O(h^6)\\
+    & = \frac{1}{Z} \left(2+c+ \frac{1}{12} c^2 + \frac{1}{3}(h_1 h_2)^2 + \underbrace{\left( a^x + \frac{1}{60}c^2 h_1  + \frac{1}{15}c h_1 h_2^2 +  \frac{1}{15}h_1^3 h_2^2\right)}_{b^x}{\sx_1} \right),
+\end{align*}
+with $a^x$ as in equation \ref{eq:ax_def}. We also determined that the approximate form of $Z$ contains no terms of order $O(h^5)$, so we we can again use equation \ref{eq:norm_z}. We already know from the $H_1^4$ term that the constant part becomes 1 when multiplied with the approximate form of $Z$, so we will only look at the part $b^x /Z $,
+\begin{align*}
+    \Tr_2\{\rho\}  & \approx  \frac{1}{4}\left(Z_1 + Z_2 \right) \left( a^x + \frac{1}{60}c^2 h_1  + \frac{1}{15}c h_1 h_2^2 +  \frac{1}{15}h_1^3 h_2^2\right) + O(h^6)\\
+    & =  \frac{1}{4}\left(Z_1 a^x + Z_2 a^x + Z_1\left(\frac{1}{60}c^2 h_1  + \frac{1}{15}c h_1 h_2^2 +  \frac{1}{15}h_1^3 h_2^2\right)\right) .
+\end{align*}
+Multiplying $Z_2$ with $b^x$ only gives terms of order $<O(h^5)$ for $Z_2 a^x$. We calculate the remaining three terms separately,
+\begin{align*}
+    Z_1 a^x &= 2 (1 - \frac{1}{2}c) \left(h_1 + \frac{1}{6} h_1 \left(c  + 2 h_2^2 \right)\right)\\
+    & =  2h_1 + \frac{1}{3} h_1 \left(c  + 2 h_2^2 \right) - c h_1 - \frac{1}{6} c h_1 \left(c  + 2 h_2^2 \right)\\
+    & =  2 h_1 \left(1  - \frac{1}{3} \left[h_1^2 + J_{12}^2 \right] \right) - \frac{1}{6} c h_1 \left(c  + 2 h_2^2 \right).
+\end{align*}
+The first term is the same as the $H_1^3$ term. Since $Z_2 \propto O(h^4)$, only terms of $a^x$ linear in $h$ can contribute,
+\begin{align*}
+   Z_2 a^x = h_1(\frac{5}{12} c^2 - \frac{1}{3} (h_1h_2)^2).
+\end{align*}
+The final term to the right of $Z_1$ is proportional to $O(h^5)$ so only the $1$ in $Z_1$ can contribute. Combining this gives
+\begin{align*}
+     Z_1\left(\frac{1}{60}c^2 h_1  + \frac{1}{15}c h_1 h_2^2 +  \frac{1}{15}h_1^3 h_2^2\right) & =\frac{1}{60}c^2 h_1  + \frac{1}{15}c h_1 h_2^2 +  \frac{1}{15}h_1^3 h_2^2.
+\end{align*}
+We collect all the positive and negative terms while scaling the denominator to $\frac{1}{60}$,
+\begin{align*}
+    & = h_1\left(\frac{25}{60}c^2 + \frac{1}{60}c^2  + \frac{4}{60}c h_2^2 +  \frac{4}{60}h_1^2 h_2^2 - \frac{10}{60} c^2 - \frac{20}{60} ch_2^2 - \frac{20}{60} h_1^2 h_2^2 \right)\\
+    & = h_1\frac{16}{60}\left(c^2 - c h_2^2 -  h_1^2 h_2^2 \right)= h_1\frac{4}{15}\left(c(h_1^2 + J_{12}^2) -  h_1^2 h_2^2 \right) \\
+    & = h_1\frac{4}{15}\left(h_1^4 + J_{12}^4 + h_1^2 h_2^2 + 2h_1^2 J_{12}^2+ 2h_2^2 J_{12}^2) -  h_1^2 h_2^2 \right)\\
+    & = h_1\frac{4}{15}\left(\left[h_1^2 + J_{12}^2\right]^2 + 2h_2^2 J_{12}^2\right).
+\end{align*}
+So the whole thing becomes
+\begin{align*}
+    \Tr_2\{\rho\}  & \approx   \frac{1}{2}\left(1 + h_1\left(1  - \frac{1}{3} \left[h_1^2 + J_{12}^2 \right]  + \frac{2}{15}\left(\left[h_1^2 + J_{12}^2\right]^2 + 2h_2^2 J_{12}^2\right)\right)\sx_1\right) + O(h^6).
+\end{align*}
+Remember that the hyperbolic tangent is given by
+\begin{equation*}
+    \tanh(x) = x\left(1 - \frac{x^2}{3} + \frac{2x^4}{15}\right)+ O(h^7).
+\end{equation*}
+Substituting $x= [h_1^2 + J_{12}^2]^\frac{1}{2}$ gives
+\begin{align*}
+    \tanh([h_1^2 + J_{12}^2]^\frac{1}{2}) = [h_1^2 + J_{12}^2]^\frac{1}{2}\left(1 - \frac{1}{3}[h_1^2 + J_{12}^2] + \frac{2}{15}[h_1^2 + J_{12}^2]^2\right),
+\end{align*}
+and multiplying with $\frac{h_1}{[h_1^2 + J_{12}^2]^\frac{1}{2}}$ gives back the original expression, except for the term $+ 2h_2^2 J_{12}^2$,
+\begin{align*}
+    \tanh([h_1^2 + J_{12}^2]^\frac{1}{2})\frac{h_1}{[h_1^2 + J_{12}^2]^\frac{1}{2}}= h_1\left(1  - \frac{1}{3} \left[h_1^2 + J_{12}^2 \right]  + \frac{2}{15}\left[h_1^2 + J_{12}^2\right]^2\right).
+\end{align*}
+So the reduced density matrix can be written as 
+\begin{equation}
+    \Tr_2\{\rho\} \approx \frac{1}{2}\left(1 + \left(\tanh([h_1^2 + J_{12}^2]^\frac{1}{2})\frac{h_1}{[h_1^2 + J_{12}^2]^\frac{1}{2}} + \frac{4}{15}h_2^2 J_{12}^2 \right)\sx_1 \right) + O(h^6) \label{eq_ap:tanh_tr}.
+\end{equation}
+As a final check, we note that for $J_{12}\to0$ the full exponent factorizes
+\begin{align*}
+    \exp(h_1 \sx_1 + h_2 \sx_2) =  \exp(h_1 \sx_1)\exp(h_2 \sx_2).
+\end{align*}
+Taking the trace gives
+\begin{align*}
+    \Tr_2\{\exp(h_1 \sx_1)\exp(h_2 \sx_2)\} &= \exp(h_1 \sx_1)\Tr_2\{\exp(h_2 \sx_2)\} \\
+    & = \exp(h_1 \sx_1) = \frac{1}{2}(1 + \tanh{|h_1|}\frac{h_1}{|h_1|}\sx_1),
+\end{align*}
+which is equivalent to expression \ref{eq_ap:tanh_tr} for $J_{12} \to 0$. While this looks further study of the behaviour of higher order behaviour of $+ 2h_2^2 J_{12}^2$ is required.
+
+\section{Adding $\sz_1$}
+
+We add a term $g_1 \sigma^z_1$ to the Hamiltonian of section 1
+\begin{align*}
+    \Aboxed{H_2 &=  {H_1} + g_1 {\sz_1}}.
+\end{align*}
+The square term is given by
+\begin{align*}
+    H_2^2 =  ({H_1} + g_1 {\sz_1})^2 = H_1^2 + g_1(H_1 {\sz_1} +  {\sz_1} H_1)+ g_1^2.
+\end{align*}
+The two terms of order $g_1$ are unknown
+\begin{align*}
+    H_1 {\sz_1} &= h_1 {\sx_1} {\sz_1} + h^x_2 {\sx_1} {\sz_1} + J_{12} {\sz_1} {\sz_2} {\sz_1}\\
+    {\sz_1} H_1 &= h_1 {\sz_1}{\sx_1}  + h^x_2 {\sz_1} {\sx_1}  + J_{12} {\sz_1} {\sz_1} {\sz_2},
+\end{align*}
+using that $\acomm{{\sx_1}}{{\sz_1}}=0$ we get
+\begin{align*}
+    H_1 \sigma^z_1 +  {\sz_1} H_1 =  2h^x_2 {\sz_1} {\sx_1}  + 2J_{12}{\sz_2},
+\end{align*}
+which gives
+\begin{align*}
+    \Aboxed{H_2^2 &=  H_1^2 + 2 g_1(h^x_2 {\sz_1} {\sx_1}  + J_{12}{\sz_2})+ g_1^2}.
+\end{align*}
+For the third order term we get
+\begin{align}
+    H_2^3 &=  ({H_1} + g_1 {\sz_1})^3 = (H_1^2 + g_1(H_1 {\sz_1} +  {\sz_1} H_1)+ g_1^2 )({H_1} + g_1 {\sz_1})\nonumber\\
+    H_2^3 &=  H_1^3 + g_1(H_1 {\sz_1}H_1 +  {\sz_1} H_1^2) + g_1^2 H_1 + g_1 H_1^2 {\sz_1} + g_1^2 (H_1 +  {\sz_1} H_1{\sz_1}) + g_1^3{\sz_1} \label{eq:h2_3rd}.
+\end{align}
+The unknown terms are $H_1 {\sz_1}H_1$, ${\sz_1} H_1^2$, $H_1^2 {\sz_1}$ and ${\sz_1} H_1\sz$.
+\begin{enumerate}
+    \item $\bm{H_1 {\sz_1}H_1}$ \newline
+    We know the part $H_1{\sz_1}$ from the squared term,
+    \begin{align*}
+         H_1 {\sz_1}H_1 & = (h_1 {\sx_1} {\sz_1} + h^x_2 {\sx_2} {\sz_1} + J_{12} {\sz_1} {\sz_2} {\sz_1})(h_1 {\sx_1} + h^x_2 {\sx_1}  + J_{12} {\sz_1} {\sz_2})\\
+         & = h_1^2 {\sx_1} {\sz_1} {\sx_1} + h_2 h_1 {\sx_2} {\sz_1} {\sx_1} + J_{12}h_1 {\sz_2} {\sx_1} + h_1 h_2 {\sz_1}{\sx_2} + h_2^2 {\sx_2}{\sz_1}{\sx_2}\\
+         & + J_{12} h_2 {\sz_2} \sx_x + h_1 J_{12} {\sx_1} {\sz_1}{\sz_1}{\sz_2} + h_2 J_{12} {\sx_2} {\sz_1}{\sz_1}{\sz_2} + J_{12}^2 {\sz_2} {\sz_1}{\sz_2}\\
+         & = -h_1^2 {\sz_1} + J_{12}^2 {\sz_1} + (h_2^z)^2 {\sz_1} \\
+         & = (c - 2 h_1^2) {\sz_1}.
+    \end{align*}
+    \item $\bm{{\sz_1} H_1^2}$ \newline
+    We know $H_1^2$ from the squared term of $H_1$,
+    \begin{align*}
+        {\sz_1} H_1^2 & = {\sz_1}(c + 2h_1 h_2 {\sx_1}{\sx_2}) =  c{\sz_1} + 2h_1 h_2 {\sz_1}{\sx_1}{\sx_2}).
+    \end{align*}
+    \item $\bm{{\sz_1} H_1^2}$ \newline
+    Similar as the previous term,
+    \begin{align*}
+        H_1^2{\sz_1}  & = (c + 2h_1 h_2 {\sx_1}{\sx_2}){\sz_1} =  c{\sz_1} + 2h_1 h_2 {\sx_1}{\sx_2}{\sz_1}).
+    \end{align*}
+    Where we see can already see that the final term is canceled by anti-commutation with the final term in 2.).
+    \item $\bm{{\sz_1} H_1\sz}$ \newline
+    Again, we know the part $H_1{\sz_1}$ from the squared term,
+    \begin{align*}
+        {\sz_1} H_1^2\sz & = {\sz_1}(h_1 {\sx_1} {\sz_1} + h^x_2 {\sx_2} {\sz_1} + J_{12} {\sz_1} {\sz_2} {\sz_1})\\
+        & =  h_1 {\sz_1} {\sx_1} {\sz_1} + h^x_2 {\sx_2} + J_{12} {\sz_2} {\sz_1}.
+    \end{align*}
+\end{enumerate}
+Substituting all these terms in equation \ref{eq:h2_3rd} gives
+\begin{align*}
+    \Aboxed{H_2^3 & = H_1^3 + g_1((c - 2h_2^2) {\sz_1} + {\sz_1} + 2c {\sz_1})  + g_1^2(3H_1 - h_1 {\sx_1} - h_1{\sx_1}) + g_1^3 {\sz_1}}.
+\end{align*}
+We take the trace of each order of $H$, which gives
+\begin{align*}
+    \Tr_2\{H_2\} & = 2 h_1 {\sx_1} + 2g_1 {\sz_1}\\
+    \Tr_2\{H_2^2\} & = 2(c + g_1^2)\\
+    \Tr_2\{H_2^3\} & = (2h_1 c + 4 h_1 h_2^2 + 2g_1^2 h_1) {\sx_1} + (6g_1c - 4h_1^2 g_1 + 2g_1^3) {\sz_1}.
+\end{align*}
+This gives for the third order expansion of $\Tr_2\{\rho\} = \Tr_2\{\exp(H_2)\}$ the following:
+\begin{align*}
+    \Tr_2\{\rho\}  & \approx \frac{1}{Z}\Tr_2\left\{ 1 + H_2 + \frac{1}{2}H_2^2 +  \frac{1}{6}H_2^3\right \} + O(h^4) \\
+    & = \frac{1}{Z} \bigg(2 + c + 2g_1 {\sz_1} + \frac{1}{2}(2c + 2g_1^2) + \frac{1}{6}(2h_1 c + 4 h_1 h_2^2 + 2g_1^2 h_1) {\sx_1} \\
+    & + \frac{1}{6}(6g_1c - 4h_1^2 g_1 + 2g_1^3) {\sz_1}\bigg) \\
+    & = \frac{1}{Z} \bigg(2 + c + g_1^2 + \overbrace{2(h_1 + \frac{1}{12}(2h_1 c + 4h_1 h_2^2+2g_1^2 h_1))}^{a^x}{\sx_1}\\
+    & + \underbrace{2(g_1 + \frac{1}{12}(6g_1c - 4h_1^2 g_1 + 2g_1^3))}_{a^z} {\sz_1}\bigg) \\
+    & = \frac{1}{Z}(2+ c + g_1^2 + a^x {\sx_1} + a^z{\sz_1}),
+\end{align*}
+with normalization $Z = 2+c+g_1^2$. We again approximate the normalization constant to order $O(h^4)$,
+\begin{align*}
+    Z \approx \frac{1}{2}(1 - \frac{1}{2}(c+g_1^2)) + O(h^4),
+\end{align*}
+and then calculate the approximations of the fields $a^x/Z$ and $a^z/Z$,
+\begin{align}
+    \frac{a^x}{2+ c + g_1^2} & \approx \frac{1}{2}(1 - \frac{1}{2}(c+g_1^2)) a^x  \nonumber\\
+    & = h_1(1 - \frac{1}{3} \left(h_1^2 + g_1^2  + J_{12}^2 \right)) \label{eq:h2_tr_3rd_x}\\
+    \frac{a^z}{2+ c + g_1^2} & \approx \frac{1}{2}(1 - \frac{1}{2}(c+g_1^2)) a^z  \nonumber\\
+    & = g_1( 1 - \frac{1}{3} \left(g_1^2 + h_1^2\right))\label{eq:h2_tr_3rd_z}.
+\end{align}
+Both terms are independent of $h_2$. The term $h_1 J_{12}^2$ pops up in the $a^x$ field due to the ${\sz_1}{\sz_2}$ interaction. Adding a ${\sz_1}{\sz_2}$ interaction will likely give a similar term in the $a^z$ field.

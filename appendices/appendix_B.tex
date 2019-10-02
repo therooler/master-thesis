@@ -1,0 +1,262 @@
+\chapter{Derivation $\Lambda$-operator perceptron}\label{sec:amin}
+
+Inspired by Amin \cite{Amin2018} we consider here the classical likelihood generalization to density matrices. In the previous proposal we start with the KL divergence and a semi-classical conditional density matrix, here we start with the classical log-likelihood,
+\begin{equation}
+    \mathcal{L}_\Lambda = - \sum_\mathbf{x} q(\mathbf{x})q(y|\mathbf{x}) \log(p(y|\mathbf{x};\mathbf{w})).
+\end{equation}
+The model probability distribution $p(y|\mathbf{x};\mathbf{w})$ is replaced by the trace over a density matrix $\rho$ times an observable operator $\Lambda$. Amin uses this operator to reduce the trace to the visible units of the quantum Boltzmann machine. Instead of minimizing the distance between the density matrices of data and model, we minimize the distance between the true label $y$ and the projected probability of an up or down state $\Lambda \rho$, which would generalize to the classical case of minimizing $\mathcal{L}_\Lambda = -\sum_\mathbf{x} q(\mathbf{x}) \log p(y;\mathbf{x})$. We use the log-likelihood given by
+\begin{equation}
+    \mathcal{L}_\Lambda = - \sum_\mathbf{x} q(\mathbf{x})q(y|\mathbf{x})\log(\Tr{\Lambda \rho}).
+\end{equation}
+The operator $\Lambda$ limits the trace only to diagonal terms that correspond to the variables being in state y. So for a certain sample $x^\mu$ we have label $y = y$. This operator can be written as
+\begin{equation*}
+    \Lambda = \frac{1}{2} (1 + y\sigma^z).
+\end{equation*}
+However,  $\Lambda$ corresponds to the two matrices
+\begin{align*}
+    y=1 \rightarrow
+    \begin{pmatrix}
+        1 & 0\\
+        0 & 0  
+    \end{pmatrix}\\
+    y=-1 \rightarrow
+    \begin{pmatrix}
+        0 & 0\\
+        0 & 1  
+    \end{pmatrix}.
+\end{align*}
+As proposal for the density matrix we take
+\begin{align}
+    \rho &= \frac{1}{Z} e^{-H}\label{eq_ap:density}\\
+    \text{where } H &= \sum_k h^k \sigma^k \text{ with } h^k \in \mathbb{R} \text{ and } k= (x,y,z) = (1,2,3)\nonumber,
+\end{align}
+which is the grand canonical ensemble description at some temperature $\beta$, which is absorbed in the fields $h^k$. We parameterize these fields as follows:
+\begin{align*}
+    \frac{m^k}{m} &= \frac{h^k}{h},\\
+    h &= \sqrt{\sum_k (h^k)^2},\\
+    m &= \tanh(h),
+\end{align*}
+so the total input $h$ is squashed between $(-1, 1)$. We further parameterize the field $h^k$ by the dot product of inputs times weights: $h^k = \mathbf{w}^k\cdot \mathbf{x}$. We use that $\rho$ is a Hermitian matrix which can be written as
+\begin{equation*}
+    \rho = \frac{1}{2}(1 + \sum_k m^k\sigma^k) = \frac{1}{2}(1 + \tanh(h) \sum_k \frac{h^k}{h} \sigma^k)
+    \label{eq_ap:density_2},
+\end{equation*}
+or
+\begin{equation*}
+    2 \rho \cosh(h) = \cosh(h) + \sinh(h) \sum_k \frac{h^k}{h} \sigma^k.
+\end{equation*}
+We also use that we can write an exponential of Pauli matrices as
+\begin{equation*}
+    e^{a \sum_k v^k} = \cosh(a) + \sinh(a) \sum_k v^k,
+\end{equation*}
+to write 
+\begin{align*}
+    2 \rho \cosh(h) &= e^{\sum_k h^k \sigma^k}\\
+    \rho &= \frac{e^{\sum_k h^k \sigma^k}}{2 \cosh(h)},
+\end{align*}
+so $Z = 2\cosh(h)$ in equation \ref{eq_ap:density}. The expression of traces in the likelihood in equation reads
+\begin{equation*}
+    \Tr{\Lambda \rho} = \Tr{\Lambda e^{-H} / Z} = \frac{\Tr{\Lambda e^{\sum_k h^k \sigma^k}}}{2 \cosh(h)}.
+\end{equation*}
+Taking the log gives
+\begin{equation}
+  = \log\Tr{\Lambda e^{\sum_k h^k \sigma^k}} - \log2 \cosh(h)
+  \label{eq_ap:lh_tr}.
+\end{equation}
+For the original quantum perceptron this expression simplified significantly, because the exponent would disappear due to the log, however the pesky $\Lambda$ prevents us from doing this. If we want to minimize the log-likelihood we have to derive the gradient with respect to the parameter $w$. Doing so gives the expression
+\begin{equation*}
+    \frac{\partial }{\partial \mathbf{w}^k} \mathcal{L}_\Lambda = \frac{\Tr{\Lambda \frac{\partial }{\partial \mathbf{w}^k} e^{-H}}}{\Tr{\Lambda e^{-H}}} - \tanh(h)\frac{h^k}{h} \mathbf{x}.
+\end{equation*}
+Since $H$ and $\frac{\partial }{\partial \mathbf{w}^k} H$ do not commute, we have that $\frac{\partial }{\partial \mathbf{w}^k} e^{-H} \neq e^{-H} \frac{\partial }{\partial \mathbf{w}^k} H$. However, if we define $e^{-H} = [e^{-\delta \tau H}]^n$ with $\delta\tau\equiv 1/n$ where $\frac{\partial }{\partial \mathbf{w}^k} e^{-\delta\tau H} = e^{-\delta\tau H} \frac{\partial }{\partial \mathbf{w}^k} H \delta\tau$ does commute,
+\begin{equation*}
+    \frac{\partial }{\partial \mathbf{w}^k} e^{-H} = \sum_{m=1}^n e^{-m \delta\tau  H} (- \frac{\partial }{\partial \mathbf{w}^k} H \delta\tau)e^{-\delta\tau(n-m) H}.
+\end{equation*}
+Taking $m\delta\tau = t$ infinitesimally small and $n\rightarrow\infty$, we can change the sum into an integral,
+\begin{equation*}
+    = -\int_{0}^1 dt\: e^{-t H} (\frac{\partial }{\partial \mathbf{w}^k} H)e^{-(1-t) H}.
+\end{equation*}
+The introduction of an imaginary time requires us to redefine the Hamiltonian that we use. The parameter $t$ can be absorbed in the fields $t H \rightarrow \sum_k t h^k \sigma^k = H(t)$. The time independent Hamiltonian gives a linear dependency on the inputs $\mathbf{x}$ with $\frac{\partial }{\partial \mathbf{w}^k} H = \sigma^k \mathbf{x}$. Combining definitions \ref{eq_ap:density_2} en \ref{eq_ap:density} gives
+\begin{equation*}
+    e^{-H(t)} = \cosh h \left(1 + \sum_k m^k(t) \sigma^k\right),
+\end{equation*}
+with the fields
+\begin{align*}
+    \frac{m^k(t)}{m(t)} &= \frac{th^k}{h(t)}\rightarrow m^k(t) = \frac{h^k}{h}\tanh(th)\\
+    h(t) &= t \sqrt{\sum_k (h^k)^2}\\
+    m(t) &= \tanh(th).
+\end{align*}
+Putting everything together starts our journey,
+\begin{equation}
+    = \frac{\Tr{\Lambda \frac{\partial }{\partial \mathbf{w}^k} e^{-H}}}{\Tr{\Lambda e^{-H}}} = -\int_{0}^1 dt\: \frac{\Tr{\Lambda e^{-H(t)} (-\frac{\partial }{\partial \mathbf{w}^k} H)e^{-H(1-t)}}}{\Tr{\Lambda e^{-H}}}
+    \label{eq_ap:lh_tr_only}.
+\end{equation}
+Only the numerator is dependent on $t$, so isolate this term,
+\begin{align*}
+    &= \int_{0}^1 dt\: \Tr{\Lambda e^{-H(t)} (\frac{\partial }{\partial \mathbf{w}^k} H)e^{-H(1-t)}}\\
+    &= \int_{0}^1 dt\: \Tr{\Lambda \cosh(th)\cosh((1-t)h) \frac{1}{2}\left(1 + \sum_{k^{\prime}} m^{k^{\prime}}(t) \sigma^{k^{\prime}} \right) (\sigma^k \mathbf{x}) \frac{1}{2} \left(1 + \sum_{k^{\prime\prime}} m^{k^{\prime\prime}}(1-t) \sigma^{k^{\prime\prime}}\right)}\\
+    &= \int_{0}^1 dt\: \frac{1}{4} \cosh(th)\cosh((1-t)h) \Tr{\frac{1}{2}(1+ y \sigma^z)  \left(\sigma^k + \sum_{k^{\prime}} m^{k^{\prime}}(t) \sigma^{k^{\prime}} \sigma^k\right)  \left(1 + \sum_{k^{\prime\prime}} m^{k^{\prime\prime}}(1-t) \sigma^{k^{\prime\prime}}\right)}\mathbf{x}\\
+    &= \int_{0}^1 dt\: \frac{1}{8} \cosh(th)\cosh((1-t)h) \Tr\bigg\{(\overbrace{1}^{\textbf{1}} + \overbrace{y \sigma^z}^{\textbf{2}}) ( \sigma^k + 
+    \sum_{k^{\prime\prime}} m^{k^{\prime\prime}}(1-t) \sigma^k\sigma^{k^{\prime\prime}} +
+    \sum_{k^{\prime}} m^{k^{\prime}}(t) \sigma^{k^{\prime}} \sigma^k  \\
+    & + \sum_{k^{\prime}k^{\prime\prime}} m^{k^{\prime}}(t) m^{k^{\prime\prime}}(1-t)\sigma^{k^{\prime}} \sigma^k\sigma^{k^{\prime\prime}})\bigg\}\mathbf{x}.
+\end{align*}
+The full term is split into two parts, indicated in bold with \textbf{1}  and \textbf{2}. Although this looks like a mess, we can make use of the trace relations of the Pauli matrices to simplify the mathematics considerably.
+
+\subsection*{Term 1}
+We look only at the trace, which can be reduced to
+\begin{align*}
+    &= \Tr\bigg\{ \sigma^k + 
+    \sum_{k^{\prime\prime}} m^{k^{\prime\prime}}(1-t) \sigma^k\sigma^{k^{\prime\prime}} +
+    \sum_{k^{\prime}} m^{k^{\prime}}(t) \sigma^{k^{\prime}} \sigma^k + \sum_{k^{\prime}k^{\prime\prime}} m^{k^{\prime}}(t) m^{k^{\prime\prime}}(1-t)\sigma^{k^{\prime}} \sigma^k\sigma^{k^{\prime\prime}}\bigg\}\\
+    &= \underbrace{\Tr{ \sigma^k }}_{=0}+ 
+    \sum_{k^{\prime\prime}} m^{k^{\prime\prime}}(1-t) \underbrace{\Tr{ \sigma^k\sigma^{k^{\prime\prime}}}}_{2\delta_{kk^{\prime\prime}}} +
+    \sum_{k^{\prime}} m^{k^{\prime}}(t) \underbrace{\Tr{\sigma^{k^{\prime}} \sigma^k}}_{2\delta_{k^\prime k}} + 
+    \sum_{k^{\prime}k^{\prime\prime}} m^{k^{\prime}}(t) m^{k^{\prime\prime}}(1-t) \underbrace{\Tr{\sigma^{k^{\prime}} \sigma^k\sigma^{k^{\prime\prime}}}}_{2i\epsilon_{k^{\prime}kk^{\prime\prime}}}.
+\end{align*}
+The final term with the Levi-Cevita symbol becomes zero, since for each $k$ all the terms are zero. Since $m^{k^{\prime}}(t) m^{k^{\prime\prime}}(1-t)$ is symmetric under the exchange $t \Leftrightarrow (1 - t)$ we get the following terms
+\begin{align*}
+    k=x &\rightarrow \epsilon_{yxz} m^{y}(t) m^{z}(1-t) + \epsilon_{zxy} m^{z}(t) m^{y}(1-t)= -m^{y}(t) m^{z}(1-t) + m^{z}(t) m^{y}(1-t) = 0,\\
+    k=y &\rightarrow \epsilon_{xyz} m^{x}(t) m^{z}(1-t) + \epsilon_{zyx} m^{z}(t) m^{x}(1-t) = m^{x}(t) m^{z}(1-t) - m^{z}(t) m^{x}(1-t) = 0,\\
+    k=z &\rightarrow \epsilon_{xzy} m^{x}(t) m^{y}(1-t) + \epsilon_{yzx} m^{y}(t) m^{x}(1-t) = -m^{x}(t) m^{y}(1-t) + m^{y}(t) m^{x}(1-t) = 0.
+\end{align*}
+Putting back the integration and additional terms we have
+\begin{align*}
+    &=\int_{0}^1 dt\: \frac{1}{8}\cosh(th)\cosh((1-t)h)\left( \sum_{k^{\prime\prime}} m^{k^{\prime\prime}}(1-t) 2\delta_{kk^{\prime\prime}} + \sum_{k^{\prime}} m^{k^{\prime}}(t) 2\delta_{k^\prime k} \right)\\
+    &= \frac{1}{4}\int_{0}^1 dt\:\cosh(th)\cosh((1-t)h) ( m^{k}(1-t) + m^{k}(t)).
+\end{align*}
+Plugging in the redefined time dependent fields gives
+\begin{align*}
+    &=\frac{1}{4}\int_{0}^1 dt\: \cosh(th)\cosh((1-t)h) \left[ \tanh((1-t)h) + \tanh(ht)\right] \frac{h^k}{h} \mathbf{x}\\
+    &=\frac{1}{4}\int_{0}^1 dt\:  \left[\cosh(th)\sinh((1-t)h) + \cosh((1-t)h)\sinh(ht) \right]\frac{h^k}{h} \mathbf{x}.
+\end{align*}
+Integrating time-dependent parts in the first term gives
+\begin{align*}
+    &= \int_{0}^1 dx\:\cosh(ax)\sinh(a(1-x))= \frac{1}{4} \int dx\left[ (e^{ax} + e^{-ax}) (e^{a(1-x)} - e^{-a(1-x)})\right]\\
+    &= \frac{1}{4}\int_{0}^1 dx\:\left[ (e^{a} - e^{-a(1-2x)} + e^{a(1-2x)} - e^{-a}\right] = \frac{1}{2} \sinh(a) -\frac{1}{4}\int_{0}^1 dx\:\left[e^{-a(1-2x)} - e^{a(1-2x)}\right]\\
+    &= \frac{1}{2} \sinh(a) - \frac{1}{2}\int_{0}^1 dx\:\sinh(a(1-2x)) = \frac{1}{2} \sinh(a) - \frac{1}{2} \left[\frac{1}{2a}\cosh(a(1-2x))\right]_0^1\\
+    & = \frac{1}{2} \sinh(a) - \frac{1}{2} \left[\frac{1}{2a}\cosh(-a) - \frac{1}{2a}\cosh(a)\right] = \frac{1}{2} \sinh(a),
+\end{align*}
+where we have used that $\rightarrow \cosh(x)=\cosh(-x)$. Integrating the second term gives
+\begin{align*}
+    &=\int_{0}^1 dx\:\cosh(a(1-x))\sinh(ax) = \frac{1}{4} \int dx\left[ (e^{a(1-x)} + e^{-a(1-x)})(e^{ax} - e^{-ax}) \right]\\
+    &= \frac{1}{4}\int_{0}^1 dx\:\left[ (e^{a} - e^{a(1-2x)} + e^{-a(1-2x)} - e^{-a}\right].
+\end{align*}
+This is the same expression as in line two of the integration of the first term, so this integral also gives a contribution of $\frac{1}{2}\sinh(a)$. Plugging this in gives
+\begin{equation}
+    \textbf{1}\rightarrow \frac{1}{4}\sinh(h)\frac{h^k}{h} \mathbf{x}
+    \label{eq:term_1}.
+\end{equation}
+
+\subsection*{Term 2}
+
+The second term has a more complicated structure, because of the $\sigma^z$ matrix in front. This results in traces of 4 Pauli matrices with 4 indices,
+\begin{align*}
+    &= \Tr\bigg\{ y \sigma^z\sigma^k + 
+    \sum_{k^{\prime\prime}} m^{k^{\prime\prime}}(1-t) y \sigma^z\sigma^k\sigma^{k^{\prime\prime}} +
+    \sum_{k^{\prime}} m^{k^{\prime}}(t) y \sigma^z\sigma^{k^{\prime}} \sigma^k + 
+    \sum_{k^{\prime}k^{\prime\prime}} m^{k^{\prime}}(t) m^{k^{\prime\prime}}(1-t)y \sigma^z\sigma^{k^{\prime}} \sigma^k\sigma^{k^{\prime\prime}}\bigg\}\\
+    &= y\bigg[\underbrace{\Tr{\sigma^z\sigma^k}}_{2\delta_{zk}} + 
+    \sum_{k^{\prime\prime}} m^{k^{\prime\prime}}(1-t)  \underbrace{\Tr{\sigma^z\sigma^k\sigma^{k^{\prime\prime}}}}_{2i\epsilon_{zk k^{\prime\prime}}} +
+    \sum_{k^{\prime}} m^{k^{\prime}}(t) \underbrace{\Tr{ \sigma^z\sigma^{k^{\prime}} \sigma^k }}_{2i\epsilon_{z k^{\prime}k}}\\
+    & + \sum_{k^{\prime}k^{\prime\prime}} m^{k^{\prime}}(t) m^{k^{\prime\prime}}(1-t) \underbrace{\Tr{\sigma^z\sigma^{k^{\prime}} \sigma^k\sigma^{k^{\prime\prime}}} }_{2(\delta_{zk^{\prime}}\delta_{kk^{\prime\prime}} - \delta_{zk}\delta_{k^{\prime}k^{\prime\prime}} - \delta_{zk^{\prime\prime}}\delta_{k^{\prime}k})}\bigg].
+\end{align*}
+This complicates matters quite a bit, since we obtain a scaling with the output y and trace over 4 Pauli matrices.\newline
+
+\noindent The first term is only non-zero for $k=z$.\newline
+
+\noindent The second and third terms are given by
+\begin{equation*}
+    =  2i\sum_{k^{\prime\prime}} m^{k^{\prime\prime}}(1-t)\epsilon_{zk k^{\prime\prime}} + 2i\sum_{k^{\prime}}  m^{k^{\prime}}(t)\epsilon_{zk^{\prime}k},
+\end{equation*}
+and are zero for $k=z$ by definition of the Levi-Cevita symbol and each contain a single non-zero term for $k=x,2$. Then, we have
+\begin{align*}
+    k=x & \rightarrow 2i\left( m^2(1-t)\epsilon_{zxy} + m^2(1-t)\epsilon_{zyx}\right) = 2i\left( m^2(1-t) - m^2(t)\right)\\
+    k=y & \rightarrow 2i\left( m^1(1-t)\epsilon_{zyx} + m^1(1-t)\epsilon_{zxy}\right) = 2i\left( -m^1(1-t) + m^1(t)\right).
+\end{align*}
+However, we know the resulting integral will give a $\frac{1}{2}\sinh(h)$ for both $m^k(t)$ terms, so for $k=x,2$ these terms are zero.\newline
+The fourth term is given by
+\begin{align*}
+    2\sum_{k^{\prime}k^{\prime\prime}} m^{k^{\prime}}(t) m^{k^{\prime\prime}}(1-t) (\delta_{zk^{\prime}}\delta_{kk^{\prime\prime}} - \delta_{zk}\delta_{k^{\prime}k^{\prime\prime}} + \delta_{zk^{\prime\prime}}\delta_{k^{\prime}k}),
+\end{align*}
+which we split into three parts for $k=x,y,z$. We perform the sum over $k^{\prime}$. The underbraces specify for which indices a term is non-zero,
+\begin{align*}
+    k=x \rightarrow  &\sum_{k^{\prime\prime}} 2m^{x}(t)[
+    \underbrace{\delta_{zx}\delta_{xk^{\prime\prime}}}_{=0} - 
+    \underbrace{\delta_{zx}\delta_{xk^{\prime\prime}}}_{=0} + 
+    \underbrace{\delta_{zk^{\prime\prime}}\delta_{x1}}_{k^{\prime\prime}=z} ] m^{k^{\prime\prime}}(1-t) \\
+    &+ 2m^{y}(t)[
+    \underbrace{\delta_{zy}\delta_{xk^{\prime\prime}}}_{=0} - 
+    \underbrace{\delta_{zx}\delta_{yk^{\prime\prime}}}_{=0} + 
+    \underbrace{\delta_{zk^{\prime\prime}}\delta_{y1}}_{=0} ] m^{k^{\prime\prime}}(1-t)\\
+    &+ 2m^{z}(t)[
+    \underbrace{\delta_{zz}\delta_{xk^{\prime\prime}}}_{k^{\prime\prime}=x} - 
+    \underbrace{\delta_{zx}\delta_{zk^{\prime\prime}}}_{=0} + 
+    \underbrace{\delta_{zk^{\prime\prime}}\delta_{zx}}_{=0} ] m^{k^{\prime\prime}}(1-t)\\
+    & = 2[m^{x}(t) m^{z}(1-t) + m^{z}(t) m^{x}(1-t)],
+\end{align*}
+\begin{align*}
+    k=y \rightarrow  &\sum_{k^{\prime\prime}} 2m^{x}(t)[
+    \underbrace{\delta_{zx}\delta_{yk^{\prime\prime}}}_{=0} - 
+    \underbrace{\delta_{zy}\delta_{xk^{\prime\prime}}}_{=0} + 
+    \underbrace{\delta_{zk^{\prime\prime}}\delta_{xy}}_{=0} ] m^{k^{\prime\prime}}(1-t)\\
+    &+ 2m^{y}(t)[
+    \underbrace{\delta_{zy}\delta_{yk^{\prime\prime}}}_{=0} - 
+    \underbrace{\delta_{zy}\delta_{yk^{\prime\prime}}}_{=0} + 
+    \underbrace{\delta_{zk^{\prime\prime}}\delta_{y2}}_{k^{\prime\prime}=z} ] m^{k^{\prime\prime}}(1-t)\\
+    &+ 2m^{z}(t)[
+    \underbrace{\delta_{zz}\delta_{yk^{\prime\prime}}}_{k^{\prime\prime}=y} - 
+    \underbrace{\delta_{zy}\delta_{zk^{\prime\prime}}}_{=0} + 
+    \underbrace{\delta_{zk^{\prime\prime}}\delta_{zy}}_{=0} ] m^{k^{\prime\prime}}(1-t)\\
+    & = 2[m^{y}(t) m^{z}(1-t) + m^{z}(t) m^{y}(1-t)],
+\end{align*}
+\begin{align*}
+    k=z \rightarrow  &\sum_{k^{\prime\prime}} 2m^{x}(t)[
+    \underbrace{\delta_{zx}\delta_{zk^{\prime\prime}}}_{=0} - 
+    \underbrace{\delta_{zz}\delta_{xk^{\prime\prime}}}_{k^{\prime\prime}=x} + 
+    \underbrace{\delta_{zk^{\prime\prime}}\delta_{x3}}_{=0} ] m^{k^{\prime\prime}}(1-t)\\
+    &+ 2m^{y}(t)[
+    \underbrace{\delta_{zy}\delta_{zk^{\prime\prime}}}_{=0} - 
+    \underbrace{\delta_{zz}\delta_{yk^{\prime\prime}}}_{k^{\prime\prime}=y} + 
+    \underbrace{\delta_{zk^{\prime\prime}}\delta_{y3}}_{=0} ] m^{k^{\prime\prime}}(1-t)\\
+    &+ 2m^{z}(t)[
+    \underbrace{\delta_{zz}\delta_{zk^{\prime\prime}} - 
+    \delta_{zz}\delta_{zk^{\prime\prime}}}_{=0} + 
+    \underbrace{\delta_{zk^{\prime\prime}}\delta_{zz}}_{k^{\prime\prime}=z} ] m^{k^{\prime\prime}}(1-t)\\
+    & = 2[-m^{x}(t) m^{x}(1-t) - m^{y}(t) m^{y}(1-t) + m^{z}(t) m^{z}(1-t)].
+\end{align*}
+We need to perform the integral over the square of the fields $m^k(t) m^{k^\prime}(1-t)$,
+\begin{align*}
+    &= \int_{0}^1 dt\: \frac{1}{8}\cosh(th)\cosh((1-t)h) 2m^k(t) m^{k^\prime}(1-t)\\
+    &= \frac{1}{4}\int_{0}^1 dt\: \cosh(th)\cosh((1-t)h)\tanh(ht)\tanh((1-t)h) \frac{h^k h^{k^\prime}}{h^y}\\
+    &= \frac{1}{4}\int_{0}^1 dt\: \sinh(th)\sinh((1-t)h) \frac{h^k h^{k^\prime}}{h^y}.
+\end{align*}
+Integrating the time-dependent parts gives
+\begin{align*}
+    &= \int_{0}^1 dx\: \sinh(ax)\sinh(a(1-x)) = \frac{1}{4} \int dx \left[(e^{ax} - e^{-ax})(e^{a(1-x)} - e^{-a(1-x)})\right]\\
+    &= \frac{1}{2} \cosh(a) - \frac{1}{2}\int_0^1 dx \cosh(a(1-2x)) = \frac{1}{2} \cosh(a) + \frac{1}{2}[\sinh(a(1-2x))\frac{1}{2a}]_0^1\\
+    & = \frac{1}{2} \cosh(a) + \frac{1}{4a}[\sinh(-a) - \sinh(a)] = \frac{1}{2} \cosh(a) - \frac{1}{2a}\sinh(a).
+\end{align*}
+For $k=x,2$ we have by symmetry $m^k(t) m^{k^\prime}(1-t) = m^k(1-t) m^{k^\prime}(t)$, so we pick up a factor 2. Putting all these things together gives the three rules:
+\begin{align*}
+    \textbf{2} \rightarrow k&=x\rightarrow \frac{2y}{h^y}\left[ \frac{1}{2}\cosh(h) - \frac{1}{2h}\sinh(h) \right]h^xh^z\mathbf{x},\\
+    \textbf{2} \rightarrow k&=y\rightarrow \frac{2y}{h^y}\left[  \frac{1}{2}\cosh(h) - \frac{1}{2h}\sinh(h) \right]h^yh^z\mathbf{x},\\
+     \textbf{2} \rightarrow k&=z\rightarrow \frac{y}{4}\left\{1 + \frac{1}{h^y}\left[  \frac{1}{2}\cosh(h) - \frac{1}{2h}\sinh(h) \right](-h^xh^x - h^yh^y + h^zh^z)\right\}\mathbf{x}.
+\end{align*}
+
+\subsection*{Normalization}
+
+The denominator in equation \ref{eq_ap:lh_tr_only} is responsible for the normalization,
+\begin{align*}
+    \Tr{\Lambda e^{-H}} &= \frac{1}{4}\Tr{(1 + y\sigma^z) (1+ \sum_k \sigma^k m^k)} =\frac{1}{4}\Tr{(1 + \sum_k \sigma^k m^k + y\sigma^z + y\sigma^z \sum_k \sigma^k m^k)} \\
+    &= \frac{1}{4}\left(\underbrace{\Tr{1}}_{=y} + \sum_k m^k\underbrace{\Tr{\sigma^k}}_{=0} + y\underbrace{\Tr{\sigma^z}}_{=0} + y \sum_k m^k \underbrace{\Tr{\sigma^z  \sigma^k}}_{2\delta_{zk}} \right) = \frac{1}{2}(1 + ym^z )\\
+    & = \frac{1}{2}(1 + y \tanh(h)\frac{h^z}{h})\equiv Z.
+\end{align*}
+
+\subsection*{The gradient rules}
+Putting together term \textbf{1} and \textbf{2}, adding the $\tanh{h}\frac{h^k}{h}\mathbf{x}$ term from equation \ref{eq_ap:lh_tr}, adding the sum over the samples and the empirical probabilities $q(\mathbf{x})q(y|\mathbf{x})$ gives the following gradient update rules:
+\begin{align*}
+    \frac{\partial \mathcal{L}_\Lambda }{\partial \mathbf{w}^x}&= \sum_\mathbf{x} q(\mathbf{x})q(y|\mathbf{x}) \left\{\frac{1}{4Z} \left(\sinh(h)\frac{h^x}{h} + \frac{2y}{h^y}\left[ \frac{1}{2}\cosh(h) - \frac{1}{2h}\sinh(h) \right]h^xh^z \right) - \tanh(h)\frac{h^x}{h}\right\}\mathbf{x},\\
+    \frac{\partial \mathcal{L}_\Lambda }{\partial \mathbf{w}^y} &= \sum_\mathbf{x} q(\mathbf{x})q(y|\mathbf{x}) \left\{\frac{1}{4Z}  \left(\sinh(h)\frac{h^y}{h} + \frac{2y}{h^y}\left[  \frac{1}{2}\cosh(h) - \frac{1}{2h}\sinh(h) \right]h^yh^z \right) - \tanh(h)\frac{h^y}{h}\right\}\mathbf{x},\\
+    \frac{\partial \mathcal{L}_\Lambda }{\partial \mathbf{w}^z} &= \sum_\mathbf{x} q(\mathbf{x})q(y|\mathbf{x})\bigg\{\frac{1}{4Z} \left(\sinh(h)\frac{h^z}{h} + y\left(1 + \frac{1}{h^y}\left[  \frac{1}{2}\cosh(h) - \frac{1}{2h}\sinh(h) \right](-h^x h^x - h^y h^y + h^z h^z)\right)\right)\\ 
+    &- \tanh(h)\frac{h^z}{h}\bigg\}\mathbf{x}.
+\end{align*}
